@@ -8,15 +8,15 @@ Para cumplir con el PDF y además permitir que otros compañeros se conecten des
 
 ```mermaid
 flowchart TD
-    subgraph Red LAN Física ["Red Wi-Fi / LAN del Laboratorio"]
+    subgraph Red_LAN_Fisica ["Red Wi-Fi / LAN del Laboratorio"]
         Router["Router Principal"]
         Laptop2["Laptop Integrante 2 (Cliente Físico)"]
         Phone["Celular para Pruebas"]
     end
 
-    subgraph Tu Computadora ["Laptop Principal - Host"]
+    subgraph Computadora_Host ["Laptop Principal - Host"]
         
-        subgraph Entorno VMware ["Producción Simulada"]
+        subgraph Entorno_VMware ["Producción Simulada"]
             ServerVM["SERVIDOR LINUX VM<br/>(Cerebro Central)<br/>- PostgreSQL (BD)<br/>- FastAPI (Backend)<br/>- Nginx (Frontend)<br/>- DHCP, DNS, Samba"]
             ClientVM1["VM Cliente 1 (Recepción)"]
             ClientVM2["VM Cliente 2 (Administración)"]
