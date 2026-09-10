@@ -14,12 +14,24 @@ La base de datos se llama `hotel_real`. Las credenciales configuradas en `src/ba
 * **Password:** admin123
 * **Host/Port:** localhost:5432
 
-## Cómo Levantarlo (Ejecución)
+---
 
-1. Abre tu terminal en la raíz del proyecto (`/home/user/proyecto_so2_hotel/`).
-2. Activa el entorno virtual (o usa directamente su binario):
+## 🚀 Cómo Levantar el Backend (Paso a Paso)
+
+Para que la página web funcione, el motor (Backend) debe estar encendido y corriendo de fondo. 
+
+1. Abre tu **Terminal** (recomendado usar la terminal integrada de VS Code).
+2. Entra a la carpeta del backend:
    ```bash
-   ./venv/bin/python3 src/backend/main.py
+   cd /home/user/proyecto_so2_hotel/src/backend
    ```
-3. El servidor iniciará en el puerto `8080`.
-4. **Ver el Swagger UI:** Entra a `http://localhost:8080/docs` en tu navegador para ver la documentación gráfica interactiva de la API.
+3. Ejecuta el archivo principal usando el entorno virtual que tiene instalado FastAPI:
+   ```bash
+   ../../venv/bin/python3 main.py
+   ```
+4. Verás un mensaje en verde confirmando que el servidor ha iniciado.
+5. **Verificación:** Abre tu navegador de Ubuntu y entra a:
+   - Para ver la API gráfica (Swagger): [http://localhost:8080/docs](http://localhost:8080/docs)
+   - Para ver los datos crudos en JSON: [http://localhost:8080/api/rooms](http://localhost:8080/api/rooms)
+
+*(Nota: Para apagar el servidor, simplemente presiona `Ctrl + C` en la terminal).*
