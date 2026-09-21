@@ -1,9 +1,29 @@
--- Actualizacion de Base de Datos (V2)
+-- Esquema Completo de Base de Datos - Hotel Real
 
--- Expandiendo la tabla habitacion
 DROP TABLE IF EXISTS factura CASCADE;
 DROP TABLE IF EXISTS reserva CASCADE;
 DROP TABLE IF EXISTS habitacion CASCADE;
+DROP TABLE IF EXISTS perfil_cliente CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
+
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    rol VARCHAR(20) NOT NULL CHECK (rol IN ('admin', 'cliente')),
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE perfil_cliente (
+    id_usuario INTEGER PRIMARY KEY REFERENCES usuario(id),
+    nombre VARCHAR(100) NOT NULL,
+    apellido_paterno VARCHAR(100) NOT NULL,
+    apellido_materno VARCHAR(100),
+    ci VARCHAR(20) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    nit VARCHAR(20),
+    razon_social VARCHAR(100)
+);
 
 CREATE TABLE habitacion (
     id SERIAL PRIMARY KEY,
@@ -34,10 +54,12 @@ CREATE TABLE factura (
     fecha_emision TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Insercion de datos por defecto
+INSERT INTO usuario (rol, correo, password_hash) VALUES ('admin', 'admin@hotelreal.com.bo', 'admin123');
+
 INSERT INTO habitacion (numero, piso, tipo, vista, precio_bs, estado) VALUES
 ('101', 1, 'Simple', 'Interior', 150.00, 'disponible'),
 ('102', 1, 'Simple', 'A la Calle', 180.00, 'disponible'),
 ('201', 2, 'Doble Twin', 'A la Calle', 250.00, 'disponible'),
 ('301', 3, 'Matrimonial', 'Interior', 300.00, 'disponible'),
 ('501', 5, 'Suite Ejecutiva', 'Al Illimani', 500.00, 'disponible');
-
