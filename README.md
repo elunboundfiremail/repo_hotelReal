@@ -1,6 +1,5 @@
 # Guía Definitiva - Proyecto Hotel Real (Avance 50%)
 
-Sigue estos pasos estrictamente en orden. Cada vez que veas el ícono 📸, toma una captura de pantalla para tu informe.
 
 ---
 
@@ -38,7 +37,6 @@ Fijaremos la IP en el adaptador Host-Only.
    ```bash
    sudo netplan apply
    ```
-📸 **CAPTURA 1:** Ejecuta `ip a` para demostrar que la IP 192.168.19.10 está fijada correctamente en tu segunda tarjeta de red.
 
 ---
 
@@ -69,7 +67,6 @@ Crearemos el personal y su carpeta confidencial.
    sudo chown root:hotel_staff /var/hotel_reportes
    sudo chmod 770 /var/hotel_reportes
    ```
-📸 **CAPTURA 2:** Ejecuta `ls -ld /var/hotel_reportes` y `groups recepcion`.
 
 ---
 
@@ -84,8 +81,6 @@ Crearemos el personal y su carpeta confidencial.
    sudo ufw allow 53/udp    # DNS
    sudo ufw --force enable
    ```
-📸 **CAPTURA 3:** Ejecuta `sudo ufw status verbose`.
-📸 **CAPTURA 4:** En tu Windows/Mac, abre CMD/Terminal y conéctate: `ssh tu_usuario_linux@192.168.19.10`. Muestra que lograste entrar remotamente.
 
 ---
 
@@ -114,7 +109,6 @@ Crearemos el personal y su carpeta confidencial.
    CREATE DATABASE db_hotelreal OWNER admin_db_hotel;
    \q
    ```
-📸 **CAPTURA 5:** Ejecuta `sudo systemctl status postgresql` y un `ls -ld /var/soporte_hotel`.
 
 ---
 
@@ -150,7 +144,6 @@ Crearemos el personal y su carpeta confidencial.
    ```bash
    sudo systemctl restart named
    ```
-📸 **CAPTURA 6:** Ejecuta `nslookup www.hotelreal.com.bo 127.0.0.1` para verificar que el servidor se responde a sí mismo con éxito.
 
 ---
 
@@ -177,7 +170,6 @@ Crearemos el personal y su carpeta confidencial.
    cd /home/user/proyecto_hotel/frontend
    sudo python3 -m http.server 80 &
    ```
-📸 **CAPTURA 7:** Muestra tu página web abriendo `http://192.168.19.10` en tu navegador de Windows, demostrando que carga desde tu Linux.
 
 ---
 
@@ -190,7 +182,6 @@ Vamos a demostrar que el `chmod 770` funciona simulando que un usuario "X" (que 
 # Cambiamos temporalmente al usuario "games" (un usuario del sistema que no es del grupo hotel_staff)
 sudo -u games ls -la /var/hotel_reportes
 ```
-📸 **CAPTURA 8:** Te saldrá el error `Permiso denegado` (Permission denied). Esto demuestra empíricamente que tu configuración de permisos es impenetrable para usuarios externos.
 
 **Prueba 2: Eficacia del Firewall (Puertos bloqueados)**
 Nuestro UFW solo tiene abiertos el 22 (SSH), 80 (Web) y 53 (DNS). Vamos a probar si el Firewall bloquea un intento de conexión a un puerto cerrado (por ejemplo, el 8080).
@@ -198,11 +189,9 @@ Nuestro UFW solo tiene abiertos el 22 (SSH), 80 (Web) y 53 (DNS). Vamos a probar
 # Intentamos forzar una conexión de red local a un puerto cerrado
 curl -v telnet://192.168.19.10:8080
 ```
-📸 **CAPTURA 9:** La terminal se quedará colgada o mostrará `Connection refused` / `Timeout`. Presiona `Ctrl + C` para cancelar. Esto demuestra que UFW está repeliendo intrusos exitosamente.
 
 **Prueba 3: Resolución Local vs IP (DNS)**
 Verificar que la máquina sabe quién es `hotelreal.com.bo` gracias a BIND9.
 ```bash
 nslookup hotelreal.com.bo
 ```
-📸 **CAPTURA 10:** La salida mostrará que el servidor que responde es tu propia IP (192.168.19.10), demostrando que tu DNS local funciona como un servidor real de internet.
