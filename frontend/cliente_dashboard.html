@@ -20,23 +20,24 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="text-sm font-bold text-gray-700">Llegada</label>
-                        <input type="date" id="fecha_in" class="border rounded w-full py-2 px-3" required>
+                        <input type="date" id="fecha_in" class="border rounded w-full py-2 px-3" required onchange="calcularTotal()">
                     </div>
                     <div>
                         <label class="text-sm font-bold text-gray-700">Salida</label>
-                        <input type="date" id="fecha_out" class="border rounded w-full py-2 px-3" required>
+                        <input type="date" id="fecha_out" class="border rounded w-full py-2 px-3" required onchange="calcularTotal()">
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label class="text-sm font-bold text-gray-700 block mb-2">Selecciona una habitacion disponible:</label>
-                    <select id="hab_select" class="border rounded w-full py-2 px-3 bg-white">
-                        <option value="">Cargando habitaciones...</option>
+                    <select id="hab_select" class="border rounded w-full py-2 px-3 bg-white" onchange="calcularTotal()">
+                        <option value="" data-precio="0">Cargando habitaciones...</option>
                     </select>
                 </div>
 
                 <div id="qr-section" class="hidden mt-8 p-4 bg-slate-50 border rounded-lg text-center">
                     <h2 class="text-lg font-bold text-slate-900 mb-2">Paso 2: Pago por QR</h2>
+                    <p class="text-xl text-amber-600 font-black mb-2" id="texto_total">Total a pagar: Bs. 0</p>
                     <p class="text-sm text-gray-600 mb-4">Escanea y transfiere el monto correspondiente a la cuenta bancaria del hotel.</p>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" class="w-32 h-32 mx-auto mb-4 opacity-50" alt="QR Falso de Prueba">
                     
@@ -71,19 +72,39 @@
             const res = await fetch('http://192.168.19.10:8000/api/habitaciones/detalle');
             const habs = await res.json();
             const select = document.getElementById('hab_select');
-            select.innerHTML = '<option value="">-- Elige una --</option>';
+            select.innerHTML = '<option value="" data-precio="0">-- Elige una --</option>';
             habs.forEach(h => {
-                select.innerHTML += `<option value="${h.id}">Nro ${h.numero} - Piso ${h.piso} - ${h.tipo} (Vista: ${h.vista}) - Bs. ${h.precio_bs}</option>`;
-            });
-
-            // Mostrar el QR si elige una habitacion
-            select.addEventListener('change', (e) => {
-                if(e.target.value) document.getElementById('qr-section').classList.remove('hidden');
-                else document.getElementById('qr-section').classList.add('hidden');
+                select.innerHTML += `<option value="${h.id}" data-precio="${h.precio_bs}">Nro ${h.numero} - ${h.tipo} - Bs. ${h.precio_bs}/noche</option>`;
             });
 
             // Cargar lista de reservas
             cargarMisReservas();
+        }
+
+        function calcularTotal() {
+            const fi = document.getElementById('fecha_in').value;
+            const fo = document.getElementById('fecha_out').value;
+            const select = document.getElementById('hab_select');
+            const habId = select.value;
+            const precioNoche = parseFloat(select.options[select.selectedIndex].getAttribute('data-precio')) || 0;
+            
+            const qrSection = document.getElementById('qr-section');
+            const textoTotal = document.getElementById('texto_total');
+
+            if (fi && fo && habId) {
+                const date1 = new Date(fi);
+                const date2 = new Date(fo);
+                const diffTime = Math.abs(date2 - date1);
+                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) diffDays = 1; // Minimo 1 noche
+                
+                const total = diffDays * precioNoche;
+                textoTotal.innerText = `Total a pagar (${diffDays} noches): Bs. ${total.toFixed(2)}`;
+                qrSection.classList.remove('hidden');
+            } else {
+                qrSection.classList.add('hidden');
+            }
         }
 
         async function cargarMisReservas() {
@@ -141,11 +162,13 @@
                 if(res.ok) {
                     alert("Reserva enviada exitosamente al hotel. Espera la confirmacion.");
                     cargarMisReservas();
+                    document.getElementById('qr-section').classList.add('hidden');
                 } else {
-                    alert("Error al enviar reserva.");
+                    const error = await res.json();
+                    alert("Error al enviar reserva: " + (error.detail || ""));
                 }
             } catch(e) {
-                alert("Error de conexion.");
+                alert("Error de conexion con el servidor.");
             }
         }
 
