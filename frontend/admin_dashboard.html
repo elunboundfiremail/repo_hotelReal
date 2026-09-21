@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administracion - Hotel Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-10 border-b border-slate-700 pb-4">
+            <h1 class="text-3xl font-black text-amber-500 uppercase tracking-widest">Panel de Recepcion</h1>
+            <button onclick="logout()" class="text-slate-400 hover:text-white transition">Cerrar Sesion</button>
+        </div>
+
+        <div class="bg-slate-800 rounded-xl shadow-2xl p-6 border border-slate-700">
+            <h2 class="text-xl font-bold mb-6 text-white">Solicitudes de Reserva Recientes</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900 text-slate-400 text-sm uppercase tracking-wider">
+                            <th class="p-4 rounded-tl-lg">ID</th>
+                            <th class="p-4">Cliente</th>
+                            <th class="p-4">Habitacion / Piso</th>
+                            <th class="p-4">Fechas</th>
+                            <th class="p-4">Estado</th>
+                            <th class="p-4 rounded-tr-lg">Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin_reservas_list" class="divide-y divide-slate-700 text-sm">
+                        <tr><td colspan="6" class="p-4 text-center text-slate-500">Cargando datos en vivo...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(!user || user.rol !== 'admin') window.location.href = 'login.html';
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        async function cargarReservas() {
+            try {
+                const res = await fetch('http://192.168.19.10:8000/api/admin/reservas');
+                const reservas = await res.json();
+                const tbody = document.getElementById('admin_reservas_list');
+                tbody.innerHTML = '';
+                
+                reservas.forEach(r => {
+                    let btn = `<button onclick="aprobar(${r.id})" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded font-bold text-xs">Validar Comprobante</button>`;
+                    let estado = `<span class="text-yellow-400 font-bold">Verificando</span>`;
+                    
+                    if(r.estado_pago === 'pagado') {
+                        btn = `<span class="text-slate-500 text-xs">Aprobado</span>`;
+                        estado = `<span class="text-green-400 font-bold">Confirmada</span>`;
+                    }
+                    
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-750 transition">
+                            <td class="p-4 text-slate-400">#${r.id}</td>
+                            <td class="p-4 font-bold">${r.nombre} ${r.apellido_paterno}</td>
+                            <td class="p-4">Nro ${r.numero} (Piso ${r.piso})<br><span class="text-slate-400 text-xs">${r.tipo}</span></td>
+                            <td class="p-4 text-slate-300">${r.fecha_entrada} a ${r.fecha_salida}</td>
+                            <td class="p-4">${estado}</td>
+                            <td class="p-4">${btn}</td>
+                        </tr>
+                    `;
+                });
+            } catch(e) {
+                console.error("Error cargando dashboard de admin", e);
+            }
+        }
+
+        async function aprobar(id) {
+            if(confirm("¿Confirmar que el deposito es valido y generar factura?")) {
+                await fetch(`http://192.168.19.10:8000/api/admin/aprobar/${id}`, {method: 'POST'});
+                cargarReservas();
+            }
+        }
+
+        cargarReservas();
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Cliente - Hotel Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-900">Bienvenido a tu Panel de Reserva</h1>
+            <button onclick="logout()" class="text-red-600 font-bold hover:underline">Cerrar Sesion</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Formulario de busqueda y reserva -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                <h2 class="text-xl font-bold text-amber-600 mb-4">Paso 1: Fechas y Habitacion</h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="text-sm font-bold text-gray-700">Llegada</label>
+                        <input type="date" id="fecha_in" class="border rounded w-full py-2 px-3" required>
+                    </div>
+                    <div>
+                        <label class="text-sm font-bold text-gray-700">Salida</label>
+                        <input type="date" id="fecha_out" class="border rounded w-full py-2 px-3" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-sm font-bold text-gray-700 block mb-2">Selecciona una habitacion disponible:</label>
+                    <select id="hab_select" class="border rounded w-full py-2 px-3 bg-white">
+                        <option value="">Cargando habitaciones...</option>
+                    </select>
+                </div>
+
+                <div id="qr-section" class="hidden mt-8 p-4 bg-slate-50 border rounded-lg text-center">
+                    <h2 class="text-lg font-bold text-slate-900 mb-2">Paso 2: Pago por QR</h2>
+                    <p class="text-sm text-gray-600 mb-4">Escanea y transfiere el monto correspondiente a la cuenta bancaria del hotel.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" class="w-32 h-32 mx-auto mb-4 opacity-50" alt="QR Falso de Prueba">
+                    
+                    <label class="text-sm font-bold text-gray-700 block text-left mb-2">Sube tu comprobante (Captura):</label>
+                    <input type="file" id="comprobante_file" accept="image/*" class="border rounded w-full py-2 px-3 bg-white mb-4">
+                    
+                    <button onclick="hacerReserva()" class="bg-slate-900 text-white font-bold py-3 w-full rounded hover:bg-amber-600 transition">Confirmar Reserva</button>
+                </div>
+            </div>
+
+            <!-- Mis Reservas -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                <h2 class="text-xl font-bold text-slate-900 mb-4">Mis Reservas</h2>
+                <div id="mis_reservas_list" class="space-y-4">
+                    <p class="text-gray-500 italic">Cargando tu historial...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if(!user || user.rol !== 'cliente') window.location.href = 'login.html';
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        async function init() {
+            // Cargar combo de habitaciones
+            const res = await fetch('http://192.168.19.10:8000/api/habitaciones/detalle');
+            const habs = await res.json();
+            const select = document.getElementById('hab_select');
+            select.innerHTML = '<option value="">-- Elige una --</option>';
+            habs.forEach(h => {
+                select.innerHTML += `<option value="${h.id}">Nro ${h.numero} - Piso ${h.piso} - ${h.tipo} (Vista: ${h.vista}) - Bs. ${h.precio_bs}</option>`;
+            });
+
+            // Mostrar el QR si elige una habitacion
+            select.addEventListener('change', (e) => {
+                if(e.target.value) document.getElementById('qr-section').classList.remove('hidden');
+                else document.getElementById('qr-section').classList.add('hidden');
+            });
+
+            // Cargar lista de reservas
+            cargarMisReservas();
+        }
+
+        async function cargarMisReservas() {
+            const res = await fetch(`http://192.168.19.10:8000/api/cliente/reservas/${user.id}`);
+            const reservas = await res.json();
+            const list = document.getElementById('mis_reservas_list');
+            list.innerHTML = '';
+            
+            if(reservas.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-sm">No tienes reservas aun.</p>';
+                return;
+            }
+
+            reservas.forEach(r => {
+                let badge = `<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Verificando Pago</span>`;
+                if(r.estado_pago === 'pagado') {
+                    badge = `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Confirmada</span> 
+                             <button onclick="alert('Factura PDF: En fase de desarrollo')" class="ml-2 text-xs text-blue-600 underline">Descargar Factura</button>`;
+                }
+                list.innerHTML += `
+                    <div class="border p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold">Habitacion ${r.numero} (${r.tipo})</span>
+                            ${badge}
+                        </div>
+                        <p class="text-sm text-gray-600">Del ${r.fecha_entrada} al ${r.fecha_salida}</p>
+                    </div>
+                `;
+            });
+        }
+
+        async function hacerReserva() {
+            const fi = document.getElementById('fecha_in').value;
+            const fo = document.getElementById('fecha_out').value;
+            const habId = document.getElementById('hab_select').value;
+            const file = document.getElementById('comprobante_file').files[0];
+
+            if(!fi || !fo || !habId || !file) {
+                alert("Completa todos los campos y sube el comprobante.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("id_usuario", user.id);
+            formData.append("id_habitacion", habId);
+            formData.append("fecha_entrada", fi);
+            formData.append("fecha_salida", fo);
+            formData.append("comprobante", file);
+
+            try {
+                const res = await fetch('http://192.168.19.10:8000/api/reservar', {
+                    method: 'POST',
+                    body: formData
+                });
+                if(res.ok) {
+                    alert("Reserva enviada exitosamente al hotel. Espera la confirmacion.");
+                    cargarMisReservas();
+                } else {
+                    alert("Error al enviar reserva.");
+                }
+            } catch(e) {
+                alert("Error de conexion.");
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

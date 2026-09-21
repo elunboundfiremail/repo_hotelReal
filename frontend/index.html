@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Real - Lujo y Confort en La Paz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800 font-sans antialiased">
+    
+    <!-- Navbar -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 top-0 transition-all duration-300 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <span class="font-black text-2xl tracking-tighter text-slate-900 uppercase">Hotel<span class="text-amber-600">Real</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#nosotros" class="text-sm font-semibold text-slate-600 hover:text-amber-600 transition">Nosotros</a>
+                    <a href="#servicios" class="text-sm font-semibold text-slate-600 hover:text-amber-600 transition">Servicios</a>
+                    <a href="#habitaciones" class="text-sm font-semibold text-slate-600 hover:text-amber-600 transition">Habitaciones</a>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <a href="login.html" class="text-sm font-bold text-slate-900 hover:text-amber-600 transition">Ingresar</a>
+                    <a href="login.html" class="text-sm font-bold bg-slate-900 text-white px-6 py-2.5 rounded hover:bg-amber-600 hover:shadow-lg transition-all">Reservar Ahora</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-bg h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-2xl">
+                <p class="text-amber-500 font-bold tracking-widest uppercase mb-4 text-sm">Bienvenido a la Ciudad Maravilla</p>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">Elevando el estandar de <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-600">hospitalidad</span>.</h1>
+                <p class="text-lg text-slate-300 mb-10 leading-relaxed">Descubre una experiencia inigualable en el corazon de La Paz. Habitaciones de lujo, gastronomia de altura y una vista panoramica del majestuoso Illimani que te quitara el aliento.</p>
+                <div class="flex space-x-4">
+                    <a href="login.html" class="bg-amber-600 text-white font-bold px-8 py-4 rounded hover:bg-amber-500 transition-all shadow-lg hover:shadow-amber-500/30">Hacer una Reserva</a>
+                    <a href="#habitaciones" class="bg-white/10 backdrop-blur-sm border border-white/20 text-white font-bold px-8 py-4 rounded hover:bg-white/20 transition-all">Explorar Habitaciones</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seccion Nosotros -->
+    <section id="nosotros" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Nuestra Historia</h2>
+                    <h3 class="text-4xl font-bold text-slate-900 mb-6">Tradicion y Modernidad en cada detalle</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed">Ubicado estrategicamente en el centro historico y financiero de La Paz, el Hotel Real combina la riqueza cultural de Bolivia con los estandares mas altos de la hoteleria internacional.</p>
+                    <p class="text-slate-600 mb-8 leading-relaxed">Ya sea por negocios o por placer, nuestro equipo esta dedicado 24/7 a asegurar que tu estadia sea perfecta. Mas que un hotel, somos tu hogar a 3.600 metros de altura.</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <span class="block text-3xl font-black text-slate-900">15+</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-wider font-bold">Años de Excelencia</span>
+                        </div>
+                        <div class="w-px h-12 bg-gray-200"></div>
+                        <div class="text-center">
+                            <span class="block text-3xl font-black text-slate-900">24/7</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-wider font-bold">Atencion Premium</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lobby del hotel" class="rounded-lg shadow-2xl">
+                    <div class="absolute -bottom-6 -left-6 bg-slate-900 p-8 rounded-lg shadow-xl hidden md:block">
+                        <p class="text-amber-500 font-bold text-xl">"El mejor hotel"</p>
+                        <p class="text-white text-sm mt-2">- TripAdvisor 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion Servicios -->
+    <section id="servicios" class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Comodidades</h2>
+                <h3 class="text-4xl font-bold text-slate-900">Diseñado para tu maximo confort</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Servicio 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-amber-100 transition">
+                        <svg class="w-8 h-8 text-slate-700 group-hover:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-3">Wi-Fi de Alta Velocidad</h4>
+                    <p class="text-slate-600 text-sm">Fibra optica dedicada en todas las habitaciones y areas comunes sin costo extra.</p>
+                </div>
+                <!-- Servicio 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-amber-100 transition">
+                        <svg class="w-8 h-8 text-slate-700 group-hover:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-3">Room Service 24/7</h4>
+                    <p class="text-slate-600 text-sm">Gastronomia local e internacional directo a la puerta de tu habitacion a cualquier hora.</p>
+                </div>
+                <!-- Servicio 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-amber-100 transition">
+                        <svg class="w-8 h-8 text-slate-700 group-hover:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-3">Traslados Aeropuerto</h4>
+                    <p class="text-slate-600 text-sm">Servicio de transporte privado y seguro desde y hacia el Aeropuerto Internacional de El Alto.</p>
+                </div>
+                <!-- Servicio 4 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-amber-100 transition">
+                        <svg class="w-8 h-8 text-slate-700 group-hover:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-3">Desayuno Buffet</h4>
+                    <p class="text-slate-600 text-sm">Incluido en todas las reservas. Disfruta de la mejor panaderia tradicional y jugos frescos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion Habitaciones -->
+    <section id="habitaciones" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-amber-600 font-bold uppercase tracking-widest text-sm mb-2">Alojamiento</h2>
+                    <h3 class="text-4xl font-bold text-slate-900">Habitaciones y Suites</h3>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="rooms-container">
+                <!-- Tarjetas generadas dinamicamente via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 pt-16 pb-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="font-black text-2xl tracking-tighter text-white uppercase mb-4 block">Hotel<span class="text-amber-500">Real</span></span>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-md">Tu eleccion de lujo en La Paz, Bolivia. Combinamos la hospitalidad andina con los estandares internacionales para brindarte una experiencia inolvidable.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li>Av. Arce Nro. 2100, La Paz</li>
+                        <li>+591 2 2440000</li>
+                        <li>reservas@hotelreal.com.bo</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-amber-500 transition">Terminos y Condiciones</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Politica de Privacidad</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Politica de Cancelacion</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+                &copy; 2026 Hotel Real S.R.L. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        async function loadRooms() {
+            try {
+                const response = await fetch('http://192.168.19.10:8000/api/habitaciones');
+                const rooms = await response.json();
+                const container = document.getElementById('rooms-container');
+                container.innerHTML = ''; // Limpiar
+                
+                // Mostrar solo 3 habitaciones distintas para no saturar la portada
+                const shownTypes = [];
+                
+                rooms.forEach(room => {
+                    if(shownTypes.includes(room.tipo)) return;
+                    shownTypes.push(room.tipo);
+
+                    let img = 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800';
+                    let desc = 'Confort ideal para viajeros de negocios con cama de plaza y media, escritorio y baño privado.';
+                    if(room.tipo.includes('Suite')) {
+                        img = 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800';
+                        desc = 'La maxima expresion del lujo. Cama King Size, sala de estar independiente y jacuzzi con vista a la ciudad.';
+                    }
+                    if(room.tipo.includes('Twin') || room.tipo.includes('Matrimonial')) {
+                        img = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800';
+                        desc = 'Espacio amplio diseñado para el descanso en pareja o amigos. Decoracion calida e iluminacion natural.';
+                    }
+                    
+                    const roomCard = `
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="${img}" alt="${room.tipo}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-900 shadow">
+                                    Disponible
+                                </div>
+                            </div>
+                            <div class="p-8">
+                                <h3 class="text-2xl font-bold text-slate-900 mb-2">${room.tipo}</h3>
+                                <p class="text-slate-500 text-sm mb-6 leading-relaxed h-16">${desc}</p>
+                                <div class="flex justify-between items-center border-t border-gray-100 pt-6">
+                                    <div>
+                                        <p class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Por noche desde</p>
+                                        <p class="text-amber-600 font-black text-2xl">Bs. ${room.precio_bs}</p>
+                                    </div>
+                                    <a href="login.html" class="bg-slate-900 text-white p-3 rounded-lg hover:bg-amber-600 transition shadow-md">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += roomCard;
+                });
+            } catch (error) {
+                console.error("Error al cargar habitaciones:", error);
+                document.getElementById('rooms-container').innerHTML = '<p class="text-red-500 text-center col-span-3">Error conectando con la base de datos (Backend inactivo).</p>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadRooms);
+    </script>
+</body>
+</html>

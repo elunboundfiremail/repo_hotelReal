@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - Hotel Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-[32rem]">
+        <h1 class="font-bold text-3xl text-blue-900 text-center mb-6">Crear Cuenta</h1>
+        <form id="regForm" class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="text-xs font-bold text-gray-700">Nombre</label>
+                <input class="border rounded w-full py-2 px-3" id="nombre" required>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-700">Carnet (CI)</label>
+                <input class="border rounded w-full py-2 px-3" id="ci" required>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-700">A. Paterno</label>
+                <input class="border rounded w-full py-2 px-3" id="pat" required>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-700">A. Materno</label>
+                <input class="border rounded w-full py-2 px-3" id="mat" required>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-700">Telefono</label>
+                <input class="border rounded w-full py-2 px-3" id="tel" required>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-700">Correo</label>
+                <input class="border rounded w-full py-2 px-3" id="correo" type="email" required>
+            </div>
+            <div class="col-span-2">
+                <label class="text-xs font-bold text-gray-700">Contraseña</label>
+                <input class="border rounded w-full py-2 px-3" id="pass" type="password" required>
+            </div>
+            <div class="col-span-2 mt-4">
+                <button class="bg-amber-600 text-white font-bold py-2 w-full rounded hover:bg-amber-700">Registrarse</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                nombre: document.getElementById('nombre').value,
+                apellido_paterno: document.getElementById('pat').value,
+                apellido_materno: document.getElementById('mat').value,
+                ci: document.getElementById('ci').value,
+                telefono: document.getElementById('tel').value,
+                correo: document.getElementById('correo').value,
+                password: document.getElementById('pass').value
+            };
+            const r = await fetch('http://192.168.19.10:8000/api/registro', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if(r.ok) {
+                alert("Cuenta creada. Inicia sesion.");
+                window.location.href = 'login.html';
+            } else {
+                alert("Error. CI o correo ya existe.");
+            }
+        });
+    </script>
+</body>
+</html>

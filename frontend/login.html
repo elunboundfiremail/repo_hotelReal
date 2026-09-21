@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Real - Iniciar Sesion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-96">
+        <div class="text-center mb-8">
+            <h1 class="font-bold text-3xl text-blue-900">Hotel Real</h1>
+            <p class="text-gray-500 mt-2">Ingresa a tu cuenta</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="correo">Correo Electronico</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-600" id="correo" type="email" placeholder="ejemplo@correo.com" required>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Contraseña</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-600" id="password" type="password" placeholder="********" required>
+            </div>
+            
+            <div id="errorMsg" class="text-red-500 text-sm mb-4 hidden text-center font-bold"></div>
+            
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 w-full rounded focus:outline-none focus:shadow-outline transition" type="submit">
+                    Entrar
+                </button>
+            </div>
+        </form>
+        
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">¿No tienes cuenta? <a href="registro.html" class="text-blue-600 hover:text-blue-800 font-bold">Registrate aqui</a></p>
+            <p class="text-sm text-gray-600 mt-2"><a href="index.html" class="text-gray-500 hover:text-gray-800">Volver al inicio</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const correo = document.getElementById('correo').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            try {
+                const response = await fetch('http://192.168.19.10:8000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ correo: correo, password: password })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    errorMsg.classList.add('hidden');
+                    // Guardar sesion local
+                    localStorage.setItem('user', JSON.stringify(data.usuario));
+                    
+                    if (data.usuario.rol === 'admin') {
+                        window.location.href = 'admin_dashboard.html';
+                    } else {
+                        window.location.href = 'cliente_dashboard.html';
+                    }
+                } else {
+                    errorMsg.textContent = "Correo o contraseña incorrectos.";
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorMsg.textContent = "Error al conectar con el servidor.";
+                errorMsg.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
