@@ -5,52 +5,57 @@
     <title>Panel de Cliente - Hotel Real</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 p-8">
+<body class="bg-amber-50 p-8">
     <div class="max-w-6xl mx-auto">
+
+        <!-- Encabezado con logo -->
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-900">Bienvenido a tu Panel de Reserva</h1>
+            <div class="flex items-center gap-4">
+                <img src="logo.jpg" alt="Hotel Real" class="w-16 h-16 object-contain rounded-full shadow-md border-2 border-amber-400">
+                <h1 class="text-3xl font-bold text-amber-900">Bienvenido a tu Panel de Reserva</h1>
+            </div>
             <button onclick="logout()" class="text-red-600 font-bold hover:underline">Cerrar Sesion</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Formulario de busqueda y reserva -->
-            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+            <div class="bg-white p-6 rounded-xl shadow-md border border-amber-100">
                 <h2 class="text-xl font-bold text-amber-600 mb-4">Paso 1: Fechas y Habitacion</h2>
-                
+
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Llegada</label>
-                        <input type="date" id="fecha_in" class="border rounded w-full py-2 px-3" required onchange="calcularTotal()">
+                        <label class="text-sm font-bold text-amber-800">Llegada</label>
+                        <input type="date" id="fecha_in" class="border border-amber-200 rounded w-full py-2 px-3" required onchange="calcularTotal()">
                     </div>
                     <div>
-                        <label class="text-sm font-bold text-gray-700">Salida</label>
-                        <input type="date" id="fecha_out" class="border rounded w-full py-2 px-3" required onchange="calcularTotal()">
+                        <label class="text-sm font-bold text-amber-800">Salida</label>
+                        <input type="date" id="fecha_out" class="border border-amber-200 rounded w-full py-2 px-3" required onchange="calcularTotal()">
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="text-sm font-bold text-gray-700 block mb-2">Selecciona una habitacion disponible:</label>
-                    <select id="hab_select" class="border rounded w-full py-2 px-3 bg-white" onchange="calcularTotal()">
+                    <label class="text-sm font-bold text-amber-800 block mb-2">Selecciona una habitacion disponible:</label>
+                    <select id="hab_select" class="border border-amber-200 rounded w-full py-2 px-3 bg-white" onchange="calcularTotal()">
                         <option value="" data-precio="0">Cargando habitaciones...</option>
                     </select>
                 </div>
 
-                <div id="qr-section" class="hidden mt-8 p-4 bg-slate-50 border rounded-lg text-center">
-                    <h2 class="text-lg font-bold text-slate-900 mb-2">Paso 2: Pago por QR</h2>
+                <div id="qr-section" class="hidden mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg text-center">
+                    <h2 class="text-lg font-bold text-amber-900 mb-2">Paso 2: Pago por QR</h2>
                     <p class="text-xl text-amber-600 font-black mb-2" id="texto_total">Total a pagar: Bs. 0</p>
                     <p class="text-sm text-gray-600 mb-4">Escanea y transfiere el monto correspondiente a la cuenta bancaria del hotel.</p>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" class="w-32 h-32 mx-auto mb-4 opacity-50" alt="QR Falso de Prueba">
-                    
-                    <label class="text-sm font-bold text-gray-700 block text-left mb-2">Sube tu comprobante (Captura):</label>
-                    <input type="file" id="comprobante_file" accept="image/*" class="border rounded w-full py-2 px-3 bg-white mb-4">
-                    
-                    <button onclick="hacerReserva()" class="bg-slate-900 text-white font-bold py-3 w-full rounded hover:bg-amber-600 transition">Confirmar Reserva</button>
+
+                    <label class="text-sm font-bold text-amber-800 block text-left mb-2">Sube tu comprobante (Captura):</label>
+                    <input type="file" id="comprobante_file" accept="image/*" class="border border-amber-200 rounded w-full py-2 px-3 bg-white mb-4">
+
+                    <button onclick="hacerReserva()" class="bg-amber-700 text-white font-bold py-3 w-full rounded hover:bg-amber-600 transition">Confirmar Reserva</button>
                 </div>
             </div>
 
             <!-- Mis Reservas -->
-            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <h2 class="text-xl font-bold text-slate-900 mb-4">Mis Reservas</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md border border-amber-100">
+                <h2 class="text-xl font-bold text-amber-900 mb-4">Mis Reservas</h2>
                 <div id="mis_reservas_list" class="space-y-4">
                     <p class="text-gray-500 italic">Cargando tu historial...</p>
                 </div>
@@ -87,7 +92,7 @@
             const select = document.getElementById('hab_select');
             const habId = select.value;
             const precioNoche = parseFloat(select.options[select.selectedIndex].getAttribute('data-precio')) || 0;
-            
+
             const qrSection = document.getElementById('qr-section');
             const textoTotal = document.getElementById('texto_total');
 
@@ -96,9 +101,9 @@
                 const date2 = new Date(fo);
                 const diffTime = Math.abs(date2 - date1);
                 let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
+
                 if (diffDays === 0) diffDays = 1; // Minimo 1 noche
-                
+
                 const total = diffDays * precioNoche;
                 textoTotal.innerText = `Total a pagar (${diffDays} noches): Bs. ${total.toFixed(2)}`;
                 qrSection.classList.remove('hidden');
@@ -112,7 +117,7 @@
             const reservas = await res.json();
             const list = document.getElementById('mis_reservas_list');
             list.innerHTML = '';
-            
+
             if(reservas.length === 0) {
                 list.innerHTML = '<p class="text-gray-500 text-sm">No tienes reservas aun.</p>';
                 return;

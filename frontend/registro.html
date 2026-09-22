@@ -5,43 +5,56 @@
     <title>Registro - Hotel Real</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-xl w-[32rem]">
-        <h1 class="font-bold text-3xl text-blue-900 text-center mb-6">Crear Cuenta</h1>
+<body class="bg-stone-50 flex items-center justify-center min-h-screen py-8">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-[32rem] border-t-4 border-amber-500">
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-4">
+            <div class="bg-white rounded-xl shadow-md p-2">
+                <img src="logo.jpg" alt="Hotel Real" class="w-24 h-24 object-contain">
+            </div>
+        </div>
+
+        <h1 class="font-bold text-3xl text-amber-900 text-center mb-2">Crear Cuenta</h1>
+        <p class="text-center text-stone-500 text-sm mb-6">Registrate en Hotel Real</p>
+
         <form id="regForm" class="grid grid-cols-2 gap-4">
             <div>
-                <label class="text-xs font-bold text-gray-700">Nombre</label>
-                <input class="border rounded w-full py-2 px-3" id="nombre" required>
+                <label class="text-xs font-bold text-amber-800">Nombre</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="nombre" required>
             </div>
             <div>
-                <label class="text-xs font-bold text-gray-700">Carnet (CI)</label>
-                <input class="border rounded w-full py-2 px-3" id="ci" required>
+                <label class="text-xs font-bold text-amber-800">Carnet (CI)</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="ci" required>
             </div>
             <div>
-                <label class="text-xs font-bold text-gray-700">A. Paterno</label>
-                <input class="border rounded w-full py-2 px-3" id="pat" required>
+                <label class="text-xs font-bold text-amber-800">A. Paterno</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="pat" required>
             </div>
             <div>
-                <label class="text-xs font-bold text-gray-700">A. Materno</label>
-                <input class="border rounded w-full py-2 px-3" id="mat" required>
+                <label class="text-xs font-bold text-amber-800">A. Materno</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="mat" required>
             </div>
             <div>
-                <label class="text-xs font-bold text-gray-700">Telefono</label>
-                <input class="border rounded w-full py-2 px-3" id="tel" required>
+                <label class="text-xs font-bold text-amber-800">Telefono</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="tel" required>
             </div>
             <div>
-                <label class="text-xs font-bold text-gray-700">Correo</label>
-                <input class="border rounded w-full py-2 px-3" id="correo" type="email" required>
+                <label class="text-xs font-bold text-amber-800">Correo</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="correo" type="email" required>
             </div>
             <div class="col-span-2">
-                <label class="text-xs font-bold text-gray-700">Contraseña</label>
-                <input class="border rounded w-full py-2 px-3" id="pass" type="password" required>
+                <label class="text-xs font-bold text-amber-800">Contraseña</label>
+                <input class="border border-amber-200 rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" id="pass" type="password" required>
             </div>
             <div class="col-span-2 mt-4">
-                <button class="bg-amber-600 text-white font-bold py-2 w-full rounded hover:bg-amber-700">Registrarse</button>
+                <button class="bg-amber-600 text-white font-bold py-2 w-full rounded hover:bg-amber-700 transition">Registrarse</button>
             </div>
         </form>
+
+        <p class="text-center text-sm text-stone-600 mt-6">¿Ya tienes cuenta? <a href="login.html" class="text-amber-600 hover:text-amber-800 font-bold">Inicia sesion</a></p>
     </div>
+
     <script>
         document.getElementById('regForm').addEventListener('submit', async (e) => {
             e.preventDefault();
