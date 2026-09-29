@@ -67,7 +67,7 @@
                 correo: document.getElementById('correo').value,
                 password: document.getElementById('pass').value
             };
-            const r = await fetch('http://192.168.19.10:8000/api/registro', {
+            const r = await fetch('/api/registro', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)

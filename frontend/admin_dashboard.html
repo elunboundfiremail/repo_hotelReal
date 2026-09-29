@@ -58,7 +58,7 @@
 
         async function cargarReservas() {
             try {
-                const res = await fetch('http://192.168.19.10:8000/api/admin/reservas');
+                const res = await fetch('/api/admin/reservas');
                 const reservas = await res.json();
                 const tbody = document.getElementById('admin_reservas_list');
                 tbody.innerHTML = '';
@@ -101,7 +101,7 @@
         async function aprobar(id) {
             if(confirm("¿Confirmar que el deposito es valido y generar factura?")) {
                 try {
-                    await fetch(`http://192.168.19.10:8000/api/admin/aprobar/${id}`, {method: 'POST'});
+                    await fetch(`/api/admin/aprobar/${id}`, {method: 'POST'});
                     cargarReservas();
                 } catch (e) {
                     alert("Error al aprobar la reserva.");

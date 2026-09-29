@@ -180,7 +180,7 @@
     <script>
         async function loadRooms() {
             try {
-                const response = await fetch('http://192.168.19.10:8000/api/habitaciones');
+                const response = await fetch('/api/habitaciones');
                 const rooms = await response.json();
                 const container = document.getElementById('rooms-container');
                 container.innerHTML = ''; // Limpiar
