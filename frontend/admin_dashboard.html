@@ -5,30 +5,42 @@
     <title>Administracion - Hotel Real</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen p-8">
+<body class="bg-stone-900 text-stone-100 min-h-screen p-8 font-sans">
     <div class="max-w-7xl mx-auto">
-        <div class="flex justify-between items-center mb-10 border-b border-slate-700 pb-4">
-            <h1 class="text-3xl font-black text-amber-500 uppercase tracking-widest">Panel de Recepcion</h1>
-            <button onclick="logout()" class="text-slate-400 hover:text-white transition">Cerrar Sesion</button>
+        
+        <!-- Encabezado con Logo -->
+        <div class="flex justify-between items-center mb-10 border-b border-stone-700 pb-6">
+            <div class="flex items-center gap-4">
+                <div class="bg-white p-1 rounded-xl shadow-lg">
+                    <img src="logo.jpg" alt="Hotel Real" class="w-12 h-12 object-contain">
+                </div>
+                <div>
+                    <h1 class="text-3xl font-black text-amber-500 uppercase tracking-widest leading-none">Panel de Recepcion</h1>
+                    <p class="text-stone-400 text-sm mt-1">Gestión de Reservas y Facturación</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="text-stone-400 font-bold hover:text-white hover:underline transition">Cerrar Sesion</button>
         </div>
 
-        <div class="bg-slate-800 rounded-xl shadow-2xl p-6 border border-slate-700">
-            <h2 class="text-xl font-bold mb-6 text-white">Solicitudes de Reserva Recientes</h2>
+        <div class="bg-stone-800 rounded-xl shadow-2xl p-6 border border-stone-700">
+            <h2 class="text-xl font-bold mb-6 text-white flex items-center gap-2">
+                Solicitudes de Reserva Recientes
+            </h2>
             
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-900 text-slate-400 text-sm uppercase tracking-wider">
-                            <th class="p-4 rounded-tl-lg">ID</th>
-                            <th class="p-4">Cliente</th>
-                            <th class="p-4">Habitacion / Piso</th>
-                            <th class="p-4">Fechas</th>
-                            <th class="p-4">Estado</th>
-                            <th class="p-4 rounded-tr-lg">Accion</th>
+                        <tr class="bg-stone-900 text-stone-400 text-sm uppercase tracking-wider">
+                            <th class="p-4 rounded-tl-lg font-semibold">ID</th>
+                            <th class="p-4 font-semibold">Cliente</th>
+                            <th class="p-4 font-semibold">Habitacion / Piso</th>
+                            <th class="p-4 font-semibold">Fechas</th>
+                            <th class="p-4 font-semibold">Estado</th>
+                            <th class="p-4 rounded-tr-lg font-semibold">Accion</th>
                         </tr>
                     </thead>
-                    <tbody id="admin_reservas_list" class="divide-y divide-slate-700 text-sm">
-                        <tr><td colspan="6" class="p-4 text-center text-slate-500">Cargando datos en vivo...</td></tr>
+                    <tbody id="admin_reservas_list" class="divide-y divide-stone-700 text-sm">
+                        <tr><td colspan="6" class="p-8 text-center text-stone-500 animate-pulse">Cargando datos en vivo...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -51,21 +63,29 @@
                 const tbody = document.getElementById('admin_reservas_list');
                 tbody.innerHTML = '';
                 
+                if (reservas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-stone-500">No hay reservas registradas.</td></tr>';
+                    return;
+                }
+
                 reservas.forEach(r => {
-                    let btn = `<button onclick="aprobar(${r.id})" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1 rounded font-bold text-xs">Validar Comprobante</button>`;
-                    let estado = `<span class="text-yellow-400 font-bold">Verificando</span>`;
+                    let btn = `<button onclick="aprobar(${r.id})" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-1.5 rounded font-bold text-xs shadow-lg transition-transform transform hover:scale-105">Validar Comprobante</button>`;
+                    let estado = `<span class="bg-yellow-900/50 text-yellow-400 font-bold px-3 py-1 rounded-full text-xs border border-yellow-700">Verificando</span>`;
                     
                     if(r.estado_pago === 'pagado') {
-                        btn = `<span class="text-slate-500 text-xs">Aprobado</span>`;
-                        estado = `<span class="text-green-400 font-bold">Confirmada</span>`;
+                        btn = `<span class="text-stone-500 text-xs font-semibold flex items-center gap-1"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Factura Emitida</span>`;
+                        estado = `<span class="bg-green-900/50 text-green-400 font-bold px-3 py-1 rounded-full text-xs border border-green-700">Confirmada</span>`;
                     }
                     
                     tbody.innerHTML += `
-                        <tr class="hover:bg-slate-750 transition">
-                            <td class="p-4 text-slate-400">#${r.id}</td>
-                            <td class="p-4 font-bold">${r.nombre} ${r.apellido_paterno}</td>
-                            <td class="p-4">Nro ${r.numero} (Piso ${r.piso})<br><span class="text-slate-400 text-xs">${r.tipo}</span></td>
-                            <td class="p-4 text-slate-300">${r.fecha_entrada} a ${r.fecha_salida}</td>
+                        <tr class="hover:bg-stone-750 transition-colors duration-200">
+                            <td class="p-4 text-stone-400 font-mono">#${r.id}</td>
+                            <td class="p-4 font-bold text-white">${r.nombre} ${r.apellido_paterno}</td>
+                            <td class="p-4">
+                                <span class="font-semibold">Nro ${r.numero}</span> (Piso ${r.piso})<br>
+                                <span class="text-amber-500 text-xs">${r.tipo}</span>
+                            </td>
+                            <td class="p-4 text-stone-300">${r.fecha_entrada} a ${r.fecha_salida}</td>
                             <td class="p-4">${estado}</td>
                             <td class="p-4">${btn}</td>
                         </tr>
@@ -73,13 +93,19 @@
                 });
             } catch(e) {
                 console.error("Error cargando dashboard de admin", e);
+                const tbody = document.getElementById('admin_reservas_list');
+                tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-red-500 font-bold">Error de conexion con el servidor.</td></tr>';
             }
         }
 
         async function aprobar(id) {
             if(confirm("¿Confirmar que el deposito es valido y generar factura?")) {
-                await fetch(`http://192.168.19.10:8000/api/admin/aprobar/${id}`, {method: 'POST'});
-                cargarReservas();
+                try {
+                    await fetch(`http://192.168.19.10:8000/api/admin/aprobar/${id}`, {method: 'POST'});
+                    cargarReservas();
+                } catch (e) {
+                    alert("Error al aprobar la reserva.");
+                }
             }
         }
 
