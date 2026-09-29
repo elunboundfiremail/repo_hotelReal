@@ -127,7 +127,7 @@
                 let badge = `<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Verificando Pago</span>`;
                 if(r.estado_pago === 'pagado') {
                     badge = `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Confirmada</span> 
-                             <button onclick="alert('Factura PDF: En fase de desarrollo')" class="ml-2 text-xs text-blue-600 underline">Descargar Factura</button>`;
+                             <button onclick="window.open('http://192.168.19.10:8000/api/factura/' + r.id, '_blank')" class="ml-2 text-xs text-blue-600 underline">Descargar Factura</button>`;
                 }
                 list.innerHTML += `
                     <div class="border p-4 rounded-lg">

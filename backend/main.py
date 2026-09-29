@@ -200,3 +200,62 @@ def get_reservas_cliente(usuario_id: int):
     cursor.close()
     conn.close()
     return reservas
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import inch
+from fastapi.responses import FileResponse
+
+@app.get("/api/factura/{reserva_id}")
+def descargar_factura(reserva_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    cursor.execute("""
+        SELECT f.id as num_factura, f.nit_emision, f.razon_social_emision, f.monto_total, f.fecha_emision,
+               r.fecha_entrada, r.fecha_salida, h.tipo, h.numero
+        FROM factura f
+        JOIN reserva r ON f.id_reserva = r.id
+        JOIN habitacion h ON r.id_habitacion = h.id
+        WHERE r.id = %s
+    """, (reserva_id,))
+    factura = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not factura:
+        raise HTTPException(status_code=404, detail="Factura no encontrada o no aprobada")
+
+    pdf_path = f"{UPLOAD_DIR}/factura_{reserva_id}.pdf"
+    
+    # Crear PDF
+    c = canvas.Canvas(pdf_path, pagesize=A4)
+    c.setFont("Helvetica-Bold", 24)
+    c.drawString(200, 800, "HOTEL REAL")
+    c.setFont("Helvetica", 12)
+    c.drawString(220, 780, "Factura Comercial")
+    
+    c.line(50, 760, 550, 760)
+    
+    c.drawString(50, 730, f"Factura Nro: {factura['num_factura']}")
+    c.drawString(50, 710, f"Fecha de Emisión: {factura['fecha_emision'].strftime('%Y-%m-%d %H:%M')}")
+    
+    c.drawString(50, 670, f"Señor(es): {factura['razon_social_emision']}")
+    c.drawString(50, 650, f"NIT/CI: {factura['nit_emision']}")
+    
+    c.line(50, 630, 550, 630)
+    
+    c.drawString(50, 600, "Detalle del Servicio:")
+    c.drawString(50, 580, f"Hospedaje en Habitación: {factura['tipo']} (Nro {factura['numero']})")
+    c.drawString(50, 560, f"Fechas: {factura['fecha_entrada']} al {factura['fecha_salida']}")
+    
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(350, 500, f"TOTAL A PAGAR: Bs. {factura['monto_total']}")
+    
+    c.setFont("Helvetica-Oblique", 10)
+    c.drawString(50, 400, "¡Gracias por su preferencia!")
+    c.drawString(50, 385, "Este documento es válido para fines de control interno de Hotel Real.")
+    
+    c.showPage()
+    c.save()
+
+    return FileResponse(path=pdf_path, filename=f"Factura_HotelReal_{reserva_id}.pdf", media_type='application/pdf')
