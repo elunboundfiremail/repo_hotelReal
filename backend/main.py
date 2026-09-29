@@ -259,3 +259,24 @@ def descargar_factura(reserva_id: int):
     c.save()
 
     return FileResponse(path=pdf_path, filename=f"Factura_HotelReal_{reserva_id}.pdf", media_type='application/pdf')
+
+from admin_report_patch import generate_admin_report
+
+@app.get("/api/admin/reporte")
+def descargar_reporte_gerencial():
+    cursor.execute('''
+        SELECT r.id, r.fecha_entrada, r.fecha_salida, r.estado_pago,
+               h.numero, h.tipo, h.precio_bs,
+               p.nombre, p.apellido_paterno
+        FROM reserva r
+        JOIN habitacion h ON r.id_habitacion = h.id
+        JOIN perfil_cliente p ON r.id_usuario = p.id_usuario
+        ORDER BY r.id DESC
+    ''')
+    rows = cursor.fetchall()
+    reservas = []
+    for row in rows:
+        reservas.append(dict(zip(['id', 'fecha_entrada', 'fecha_salida', 'estado_pago', 'numero', 'tipo', 'precio_bs', 'nombre', 'apellido_paterno'], row)))
+    
+    pdf_path = generate_admin_report(reservas)
+    return FileResponse(pdf_path, media_type="application/pdf", filename="Reporte_Reservas_Hotel.pdf")
